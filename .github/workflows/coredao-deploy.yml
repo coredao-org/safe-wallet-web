@@ -59,11 +59,11 @@ jobs:
           last_ssh: |
             cd tmp
             tar -xzvf $ARCHIVE_NAME.tar.gz
-            sudo cp -rf /home/ec2-user/tmp/dist/* /usr/share/nginx/safe-new
-            rm -rf /home/ec2-user/tmp/dist
+            sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/safe-new
+            rm -rf /home/ec2-user/tmp/out
             rm $ARCHIVE_NAME.tar.gz
 
       - name: Clean
         run: |
-          rm -rf dist
+          rm -rf out
           rm $ARCHIVE_NAME.tar.gz
