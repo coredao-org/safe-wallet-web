@@ -1,0 +1,71 @@
+name: Deploy to Core Testnet
+
+on:
+  pull_request:
+
+  push:
+    branches: ['coredao/*']
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    env:
+      ARCHIVE_NAME: ${{ github.event.repository.name }}
+    name: Deploy to testnet
+
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      # Post a PR comment before deploying
+      - name: Post a comment while building
+        if: github.event.number
+        uses: mshick/add-pr-comment@v2
+        with:
+          message-id: praul
+          message: |
+            ## Branch preview
+            ⏳ Deploying a preview site...
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]'
+
+      - uses: actions/checkout@v3
+
+      - uses: ./.github/workflows/yarn
+
+      - uses: ./.github/workflows/build
+        with:
+          secrets: ${{ toJSON(secrets) }}
+
+      - name: Create archive
+        run: tar -czf "$ARCHIVE_NAME".tar.gz out
+
+      # Staging
+      - name: Deploy to the coredao 
+        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+        with:
+          host: ${{ secrets.TEST_HOST }}
+          user: ${{ secrets.TEST_USER }}
+          key: ${{ secrets.TEST_KEY }}
+          connect_timeout: 10s
+          first_ssh: |
+
+          scp: |
+            "$ARCHIVE_NAME".tar.gz => /home/ec2-user/tmp
+          last_ssh: |
+            cd tmp
+            tar -xzvf "$ARCHIVE_NAME".tar.gz
+            sudo cp -rf /home/ec2-user/tmp/dist/* /usr/share/nginx/safe-new
+            rm -rf /home/ec2-user/tmp/dist
+            rm "$ARCHIVE_NAME".tar.gz
+
+      - name: Clean
+        run: |
+          rm -rf dist
+          rm "$ARCHIVE_NAME".tar.gz
+
+   
