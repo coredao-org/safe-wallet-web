@@ -45,7 +45,7 @@ jobs:
         run: tar -czf "$ARCHIVE_NAME".tar.gz out
 
       # Staging
-      - name: Deploy to the coredao 
+      - name: Deploy to the coredao
         uses: cross-the-world/ssh-scp-ssh-pipelines@latest
         with:
           host: ${{ secrets.TEST_HOST }}
@@ -55,17 +55,15 @@ jobs:
           first_ssh: |
 
           scp: |
-            "$ARCHIVE_NAME".tar.gz => /home/ec2-user/tmp
+            $ARCHIVE_NAME.tar.gz => /home/ec2-user/tmp
           last_ssh: |
             cd tmp
-            tar -xzvf "$ARCHIVE_NAME".tar.gz
+            tar -xzvf $ARCHIVE_NAME.tar.gz
             sudo cp -rf /home/ec2-user/tmp/dist/* /usr/share/nginx/safe-new
             rm -rf /home/ec2-user/tmp/dist
-            rm "$ARCHIVE_NAME".tar.gz
+            rm $ARCHIVE_NAME.tar.gz
 
       - name: Clean
         run: |
           rm -rf dist
-          rm "$ARCHIVE_NAME".tar.gz
-
-   
+          rm $ARCHIVE_NAME.tar.gz
