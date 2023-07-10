@@ -16,8 +16,7 @@ jobs:
     name: Deploy to testnet
 
     steps:
-
-     - name: Deploy to the coredao
+      - name: Deploy ssh
         uses: cross-the-world/ssh-scp-ssh-pipelines@latest
         with:
           host: ${{ secrets.TEST_HOST }}
