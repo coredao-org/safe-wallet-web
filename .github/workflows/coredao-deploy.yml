@@ -16,17 +16,6 @@ jobs:
     name: Deploy to testnet
 
     steps:
-      - name: Deploy ssh
-        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
-        with:
-          host: ${{ secrets.TEST_HOST }}
-          user: ${{ secrets.TEST_USER }}
-          key: ${{ secrets.TEST_KEY }}
-          connect_timeout: 10s
-          first_ssh: |
-            mkdir ~/tmp | true
-            sudo mkdir /usr/share/nginx/gnosis-new | true
-
       - name: Cancel previous runs
         uses: styfle/cancel-workflow-action@0.9.1
         with:
@@ -64,15 +53,16 @@ jobs:
           key: ${{ secrets.TEST_KEY }}
           connect_timeout: 10s
           first_ssh: |
-            mkdir ~/tmp ｜ true
-            # sudo mkdir /usr/share/nginx/gnosis | true
+            mkdir ~/tmp | true
+            sudo mkdir /usr/share/nginx/gnosis | true
             sudo mkdir /usr/share/nginx/gnosis-new | true
+
           scp: |
             $ARCHIVE_NAME.tar.gz => /home/ec2-user/tmp
           last_ssh: |
             cd tmp
             tar -xzvf $ARCHIVE_NAME.tar.gz
-            # sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/gnosis
+            sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/gnosis
             sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/gnosis-new
             rm -rf /home/ec2-user/tmp/out
             rm $ARCHIVE_NAME.tar.gz
