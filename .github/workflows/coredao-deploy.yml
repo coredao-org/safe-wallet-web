@@ -24,7 +24,7 @@ jobs:
           key: ${{ secrets.TEST_KEY }}
           connect_timeout: 10s
           first_ssh: |
-            mkdir ~/tmp
+            mkdir ~/tmp | true
             sudo mkdir /usr/share/nginx/gnosis-new | true
 
       - name: Cancel previous runs
