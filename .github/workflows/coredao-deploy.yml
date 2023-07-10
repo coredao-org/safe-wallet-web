@@ -53,13 +53,16 @@ jobs:
           key: ${{ secrets.TEST_KEY }}
           connect_timeout: 10s
           first_ssh: |
-
+            mkdir ~/tmp ｜ true
+            # sudo mkdir /usr/share/nginx/gnosis | true
+            sudo mkdir /usr/share/nginx/gnosis-new | true
           scp: |
             $ARCHIVE_NAME.tar.gz => /home/ec2-user/tmp
           last_ssh: |
             cd tmp
             tar -xzvf $ARCHIVE_NAME.tar.gz
-            sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/safe-new
+            # sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/gnosis
+            sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/gnosis-new
             rm -rf /home/ec2-user/tmp/out
             rm $ARCHIVE_NAME.tar.gz
 
