@@ -24,8 +24,8 @@ jobs:
           key: ${{ secrets.TEST_KEY }}
           connect_timeout: 10s
           first_ssh: |
-            mkdir ~/tmp ｜ true
-            sudo mkdir /usr/share/nginx/gnosis-new | true
+            mkdir ~/tmp
+            sudo mkdir /usr/share/nginx/gnosis-new
 
       - name: Cancel previous runs
         uses: styfle/cancel-workflow-action@0.9.1
