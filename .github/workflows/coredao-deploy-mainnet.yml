@@ -1,4 +1,4 @@
-name: Deploy to Core Testnet
+name: Deploy to Core Mainnet
 
 on:
   pull_request:
@@ -53,14 +53,13 @@ jobs:
           connect_timeout: 10s
           first_ssh: |
             mkdir ~/tmp | true
-            sudo mkdir /usr/share/nginx/gnosis | true
-
+            sudo mkdir /usr/share/nginx/safe | true
           scp: |
             $ARCHIVE_NAME.tar.gz => /home/ec2-user/tmp
           last_ssh: |
             cd tmp
             tar -xzvf $ARCHIVE_NAME.tar.gz
-            sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/gnosis
+            sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/safe
             rm -rf /home/ec2-user/tmp/out
             rm $ARCHIVE_NAME.tar.gz
 
@@ -73,14 +72,13 @@ jobs:
           connect_timeout: 10s
           first_ssh: |
             mkdir ~/tmp | true
-            sudo mkdir /usr/share/nginx/gnosis | true
-
+            sudo mkdir /usr/share/nginx/safe | true
           scp: |
             $ARCHIVE_NAME.tar.gz => /home/ec2-user/tmp
           last_ssh: |
             cd tmp
             tar -xzvf $ARCHIVE_NAME.tar.gz
-            sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/gnosis
+            sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/safe
             rm -rf /home/ec2-user/tmp/out
             rm $ARCHIVE_NAME.tar.gz
 
@@ -93,14 +91,13 @@ jobs:
           connect_timeout: 10s
           first_ssh: |
             mkdir ~/tmp | true
-            sudo mkdir /usr/share/nginx/gnosis | true
-
+            sudo mkdir /usr/share/nginx/safe | true
           scp: |
             $ARCHIVE_NAME.tar.gz => /home/ec2-user/tmp
           last_ssh: |
             cd tmp
             tar -xzvf $ARCHIVE_NAME.tar.gz
-            sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/gnosis
+            sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/safe
             rm -rf /home/ec2-user/tmp/out
             rm $ARCHIVE_NAME.tar.gz
 
