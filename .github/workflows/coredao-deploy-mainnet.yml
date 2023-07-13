@@ -52,8 +52,8 @@ jobs:
           key: ${{ secrets.MAIN_KEY }}
           connect_timeout: 10s
           first_ssh: |
-            mkdir ~/tmp | true
-            sudo mkdir /usr/share/nginx/safe | true
+            (mkdir ~/tmp | true)
+            (sudo mkdir /usr/share/nginx/safe | true)
           scp: |
             $ARCHIVE_NAME.tar.gz => /home/ec2-user/tmp
           last_ssh: |
@@ -71,8 +71,8 @@ jobs:
           key: ${{ secrets.MAIN_KEY }}
           connect_timeout: 10s
           first_ssh: |
-            mkdir ~/tmp | true
-            sudo mkdir /usr/share/nginx/safe | true
+            (mkdir ~/tmp | true)
+            (sudo mkdir /usr/share/nginx/safe | true)
           scp: |
             $ARCHIVE_NAME.tar.gz => /home/ec2-user/tmp
           last_ssh: |
@@ -90,8 +90,8 @@ jobs:
           key: ${{ secrets.MAIN_KEY }}
           connect_timeout: 10s
           first_ssh: |
-            mkdir ~/tmp | true
-            sudo mkdir /usr/share/nginx/safe | true
+            (mkdir ~/tmp | true)
+            (sudo mkdir /usr/share/nginx/safe | true)
           scp: |
             $ARCHIVE_NAME.tar.gz => /home/ec2-user/tmp
           last_ssh: |
