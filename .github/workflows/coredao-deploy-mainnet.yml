@@ -13,7 +13,7 @@ jobs:
       pull-requests: write
     env:
       ARCHIVE_NAME: ${{ github.event.repository.name }}
-    name: Deploy to testnet
+    name: Deploy to mainnet
 
     steps:
       - name: Cancel previous runs
@@ -72,12 +72,13 @@ jobs:
           connect_timeout: 10s
           first_ssh: |
             mkdir ~/tmp | true
+            sudo mkdir /usr/share/nginx/safe | true
           scp: |
             $ARCHIVE_NAME.tar.gz => /home/ec2-user/tmp
           last_ssh: |
             cd tmp
+            echo `date` >> a.txt
             tar -xzvf $ARCHIVE_NAME.tar.gz
-            sudo mkdir /usr/share/nginx/safe | true
             sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/safe
             rm -rf /home/ec2-user/tmp/out
             rm $ARCHIVE_NAME.tar.gz
@@ -91,12 +92,13 @@ jobs:
           connect_timeout: 10s
           first_ssh: |
             mkdir ~/tmp | true
+            sudo mkdir /usr/share/nginx/safe | true
           scp: |
             $ARCHIVE_NAME.tar.gz => /home/ec2-user/tmp
           last_ssh: |
             cd tmp
+            echo `date` >> a.txt
             tar -xzvf $ARCHIVE_NAME.tar.gz
-            sudo mkdir /usr/share/nginx/safe | true
             sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/safe
             rm -rf /home/ec2-user/tmp/out
             rm $ARCHIVE_NAME.tar.gz
