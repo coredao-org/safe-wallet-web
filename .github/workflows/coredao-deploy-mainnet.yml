@@ -1,10 +1,9 @@
 name: Deploy to Core Mainnet
 
 on:
-  pull_request:
-
   push:
-    branches: ['coredao/mainnet']
+    tags:
+      - 'm*'
 
 jobs:
   deploy:
@@ -40,70 +39,28 @@ jobs:
       - uses: ./.github/workflows/build
         with:
           secrets: ${{ toJSON(secrets) }}
+          prod: ${{ true }}
 
       - name: Create archive
-        run: tar -czf "$ARCHIVE_NAME".tar.gz out
+        run: tar -czf safe.tar.gz dist
 
-#       - name: Deploy to the HOST
-#         uses: cross-the-world/ssh-scp-ssh-pipelines@latest
-#         with:
-#           host: ${{ secrets.HOST }}
-#           user: ${{ secrets.USER }}
-#           key: ${{ secrets.MAIN_KEY }}
-#           connect_timeout: 10s
-#           first_ssh: |
-#             (mkdir ~/tmp | true)
-#             (sudo mkdir /usr/share/nginx/safe | true)
-#           scp: |
-#             $ARCHIVE_NAME.tar.gz => /home/ec2-user/tmp
-#           last_ssh: |
-#             cd tmp
-#             tar -xzvf $ARCHIVE_NAME.tar.gz
-#             sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/safe
-#             rm -rf /home/ec2-user/tmp/out
-#             rm $ARCHIVE_NAME.tar.gz
-
-      - name: Deploy to the HOST_08f35e0711ce3aa08
-        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
         with:
-          host: ${{ secrets.HOST_08f35e0711ce3aa08 }}
-          user: ${{ secrets.USER }}
-          key: ${{ secrets.MAIN_KEY }}
-          connect_timeout: 10s
-          first_ssh: |
-            mkdir ~/tmp | true
-            sudo mkdir /usr/share/nginx/safe | true
-          scp: |
-            $ARCHIVE_NAME.tar.gz => /home/ec2-user/tmp
-          last_ssh: |
-            cd tmp
-            echo `date` >> a.txt
-            tar -xzvf $ARCHIVE_NAME.tar.gz
-            sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/safe
-            rm -rf /home/ec2-user/tmp/out
-            rm $ARCHIVE_NAME.tar.gz
+          tag_name: ${{ env.RELEASE_VERSION}}
+          release_name: ${{ env.RELEASE_VERSION}}
+          body: |
+          draft: false
+          prerelease: false
+          files: |
+            stake.tar.gz
 
-      - name: Deploy to the HOST_095066982F7D933CA
-        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
         with:
-          host: ${{ secrets.HOST_095066982F7D933CA }}
-          user: ${{ secrets.USER }}
-          key: ${{ secrets.MAIN_KEY }}
-          connect_timeout: 10s
-          first_ssh: |
-            mkdir ~/tmp | true
-            sudo mkdir /usr/share/nginx/safe | true
-          scp: |
-            $ARCHIVE_NAME.tar.gz => /home/ec2-user/tmp
-          last_ssh: |
-            cd tmp
-            echo `date` >> a.txt
-            tar -xzvf $ARCHIVE_NAME.tar.gz
-            sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/safe
-            rm -rf /home/ec2-user/tmp/out
-            rm $ARCHIVE_NAME.tar.gz
-
-      - name: Clean
-        run: |
-          rm -rf out
-          rm $ARCHIVE_NAME.tar.gz
+          token: ${{ secrets.PAT }}
+          repository: coredao-org/coredao-infra
+          event-type: explorer-front-deploy
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "project_name": "safe-wallet-web", "static_path": "safe"}'
