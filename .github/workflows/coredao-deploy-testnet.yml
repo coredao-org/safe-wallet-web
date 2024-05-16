@@ -42,7 +42,7 @@ jobs:
           secrets: ${{ toJSON(secrets) }}
 
       - name: Create archive
-        run: tar -czf "$ARCHIVE_NAME".tar.gz out
+        run: tar -czf "$ARCHIVE_NAME".tar.gz dist
 
       # Staging
       - name: Deploy to the coredao
@@ -62,12 +62,12 @@ jobs:
           last_ssh: |
             cd tmp
             tar -xzvf $ARCHIVE_NAME.tar.gz
-            sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/gnosis
-            sudo cp -rf /home/ec2-user/tmp/out/* /usr/share/nginx/gnosis-new
-            rm -rf /home/ec2-user/tmp/out
+            sudo cp -rf /home/ec2-user/tmp/dist/* /usr/share/nginx/gnosis
+            sudo cp -rf /home/ec2-user/tmp/dist/* /usr/share/nginx/gnosis-new
+            rm -rf /home/ec2-user/tmp/dist
             rm $ARCHIVE_NAME.tar.gz
 
       - name: Clean
         run: |
-          rm -rf out
+          rm -rf dist
           rm $ARCHIVE_NAME.tar.gz
