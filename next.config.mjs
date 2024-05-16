@@ -18,10 +18,22 @@ const withPWA = withPWAInit({
   swSrc: `${SERVICE_WORKERS_PATH}/index.ts`,
 })
 
+const rewrites = async () => {
+  return {
+    fallback: [
+      {
+        source: "/coreapi/:path*",
+        destination: 'https://safe.test.btcs.network/api/:path*',
+      },
+    ],
+  }
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export', // static site export
   distDir: 'dist',
+  rewrites,
   images: {
     unoptimized: true,
   },

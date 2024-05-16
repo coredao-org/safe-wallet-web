@@ -196,6 +196,7 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
     setIsCreating(true)
 
     try {
+      debugger
       const readOnlyFallbackHandlerContract = await getReadOnlyFallbackHandlerContract(
         chain.chainId,
         LATEST_SAFE_VERSION,
