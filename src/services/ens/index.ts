@@ -29,7 +29,7 @@ export const resolveName = async (rpcProvider: Provider, name: string): Promise<
 
 export const lookupAddress = async (rpcProvider: Provider, address: string): Promise<string | undefined> => {
   try {
-    return (await rpcProvider.lookupAddress(address)) || undefined
+    return undefined
   } catch (e) {
     const err = e as EthersError
     logError(ErrorCodes._101, err.reason || err.message)
