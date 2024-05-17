@@ -42,7 +42,7 @@ jobs:
           prod: ${{ true }}
 
       - name: Create archive
-        run: tar -czf safe.tar.gz dist
+        run: tar -czvf safe.tar.gz dist
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -55,7 +55,7 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            stake.tar.gz
+            safe.tar.gz
 
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v2
