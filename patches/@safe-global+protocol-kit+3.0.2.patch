@@ -1,0 +1,28 @@
+diff --git a/node_modules/@safe-global/protocol-kit/.DS_Store b/node_modules/@safe-global/protocol-kit/.DS_Store
+new file mode 100644
+index 0000000..19d87f7
+Binary files /dev/null and b/node_modules/@safe-global/protocol-kit/.DS_Store differ
+diff --git a/node_modules/@safe-global/protocol-kit/dist/.DS_Store b/node_modules/@safe-global/protocol-kit/dist/.DS_Store
+new file mode 100644
+index 0000000..832dded
+Binary files /dev/null and b/node_modules/@safe-global/protocol-kit/dist/.DS_Store differ
+diff --git a/node_modules/@safe-global/protocol-kit/dist/src/.DS_Store b/node_modules/@safe-global/protocol-kit/dist/src/.DS_Store
+new file mode 100644
+index 0000000..7a1cf7d
+Binary files /dev/null and b/node_modules/@safe-global/protocol-kit/dist/src/.DS_Store differ
+diff --git a/node_modules/@safe-global/protocol-kit/dist/src/utils/.DS_Store b/node_modules/@safe-global/protocol-kit/dist/src/utils/.DS_Store
+new file mode 100644
+index 0000000..3e8a8c7
+Binary files /dev/null and b/node_modules/@safe-global/protocol-kit/dist/src/utils/.DS_Store differ
+diff --git a/node_modules/@safe-global/protocol-kit/dist/src/utils/eip-3770/config.js b/node_modules/@safe-global/protocol-kit/dist/src/utils/eip-3770/config.js
+index f5142af..a6db0f6 100644
+--- a/node_modules/@safe-global/protocol-kit/dist/src/utils/eip-3770/config.js
++++ b/node_modules/@safe-global/protocol-kit/dist/src/utils/eip-3770/config.js
+@@ -78,6 +78,7 @@ exports.networks = [
+     { chainId: 1101n, shortName: 'zkevm' },
+     { chainId: 1111n, shortName: 'wemix' },
+     { chainId: 1112n, shortName: 'twemix' },
++	{ chainId: 1114n, shortName: 'tcore2' },
+     { chainId: 1115n, shortName: 'tcore' },
+     { chainId: 1116n, shortName: 'core' },
+     { chainId: 1230n, shortName: 'UltronTestnet' },
