@@ -48,9 +48,9 @@ jobs:
       - name: Deploy to the coredao
         uses: cross-the-world/ssh-scp-ssh-pipelines@latest
         with:
-          host: ${{ secrets.TESTNET2_HOST }}
-          user: ${{ secrets.TESTNET2_USER }}
-          key: ${{ secrets.TESTNET2_KEY }}
+          host: ${{ secrets.TEST_HOST }}
+          user: ${{ secrets.TEST_USER }}
+          key: ${{ secrets.TEST_KEY }}
           connect_timeout: 10s
           first_ssh: |
             mkdir ~/tmp | true
