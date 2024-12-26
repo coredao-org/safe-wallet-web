@@ -20,7 +20,7 @@
     "css-vars": "npx -y tsx ./scripts/css-vars.ts > ./src/styles/vars.css && prettier -w src/styles/vars.css",
     "generate-types": "typechain --target ethers-v6 --out-dir src/types/contracts ./node_modules/@safe-global/safe-deployments/dist/assets/**/*.json ./node_modules/@safe-global/safe-modules-deployments/dist/assets/**/*.json ./node_modules/@openzeppelin/contracts/build/contracts/ERC20.json ./node_modules/@openzeppelin/contracts/build/contracts/ERC721.json",
     "after-install": "yarn generate-types",
-    "postinstall": "yarn after-install",
+    "postinstall": "yarn after-install && patch-package",
     "analyze": "cross-env ANALYZE=true yarn build",
     "cypress:open": "cross-env TZ=UTC cypress open --e2e",
     "cypress:canary": "cross-env TZ=UTC cypress open --e2e -b chrome:canary",
@@ -42,6 +42,7 @@
     "@safe-global/safe-core-sdk-types/**/ethers": "^6.11.1",
     "@safe-global/protocol-kit/**/ethers": "^6.11.1",
     "@safe-global/api-kit/**/ethers": "^6.11.1",
+    "@safe-global/safe-deployments": "1.34.0",
     "@gnosis.pm/zodiac/**/ethers": "^6.11.1"
   },
   "dependencies": {
@@ -58,7 +59,7 @@
     "@safe-global/api-kit": "^2.3.0",
     "@safe-global/protocol-kit": "^3.0.2",
     "@safe-global/safe-apps-sdk": "^9.0.0-next.1",
-    "@safe-global/safe-deployments": "^1.34.0",
+    "@safe-global/safe-deployments": "1.34.0",
     "@safe-global/safe-gateway-typescript-sdk": "3.19.0",
     "@safe-global/safe-modules-deployments": "^1.2.0",
     "@sentry/react": "^7.91.0",
