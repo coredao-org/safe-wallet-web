@@ -8,7 +8,6 @@ import { type FEATURES, hasFeature } from '@/utils/chains'
 
 const useChains = (): { configs: ChainInfo[]; error?: string; loading?: boolean } => {
   const state = useAppSelector(selectChains, isEqual)
-
   return useMemo(
     () => ({
       configs: state.data,
