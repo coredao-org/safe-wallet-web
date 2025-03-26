@@ -18,6 +18,7 @@ const withPWA = withPWAInit({
   swSrc: `${SERVICE_WORKERS_PATH}/index.ts`,
 })
 
+console.log(withPWA)
 const rewrites = async () => {
   return {
     fallback: [
