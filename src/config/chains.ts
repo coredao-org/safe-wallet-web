@@ -16,4 +16,6 @@ const chains = networks.reduce<Chains>((result, { shortName, chainId }) => {
   return result
 }, {})
 
+chains['tcore2'] = '1114'
+
 export default chains

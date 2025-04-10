@@ -4,6 +4,7 @@ import type { DeploySafeProps } from '@safe-global/protocol-kit'
 import type { BrowserProvider } from 'ethers'
 
 export const getAvailableSaltNonce = async (provider: BrowserProvider, props: DeploySafeProps): Promise<string> => {
+  debugger
   const safeAddress = await computeNewSafeAddress(provider, props)
   const isContractDeployed = await isSmartContract(provider, safeAddress)
 

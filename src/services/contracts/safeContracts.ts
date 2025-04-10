@@ -123,6 +123,7 @@ export const getReadOnlyFallbackHandlerContract = async (
 ): Promise<CompatibilityFallbackHandlerEthersContract> => {
   const ethAdapter = createReadOnlyEthersAdapter()
 
+  console.log(getFallbackHandlerContractDeployment(chainId, safeVersion))
   return ethAdapter.getCompatibilityFallbackHandlerContract({
     singletonDeployment: getFallbackHandlerContractDeployment(chainId, safeVersion),
     ..._getValidatedGetContractProps(safeVersion),

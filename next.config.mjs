@@ -32,7 +32,7 @@ const rewrites = async () => {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export', // static site export
-  distDir: 'dist',
+  // distDir: 'dist',
   rewrites,
   images: {
     unoptimized: true,
