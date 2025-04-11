@@ -1,7 +1,7 @@
 // Be careful what you import here as it will increase the service worker bundle size
 
 import { createStore as createIndexedDb } from 'idb-keyval'
-import { WebhookType } from '@/service-workers/firebase-messaging/webhook-types'
+import type { WebhookType } from '@/service-workers/firebase-messaging/webhook-types'
 
 export type PushNotificationPrefsKey = `${string}:${string}`
 
