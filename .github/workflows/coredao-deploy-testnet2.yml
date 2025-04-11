@@ -42,7 +42,9 @@ jobs:
           secrets: ${{ toJSON(secrets) }}
 
       - name: Create archive
-        run: tar -czf "$ARCHIVE_NAME".tar.gz dist
+        run: |
+          mv out dist
+          tar -czf "$ARCHIVE_NAME".tar.gz dist
 
       # Staging
       - name: Deploy to the coredao
