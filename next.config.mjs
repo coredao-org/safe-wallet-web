@@ -1,6 +1,6 @@
-import path from 'path'
-import withBundleAnalyzer from '@next/bundle-analyzer'
 import withPWAInit from '@ducanh2912/next-pwa'
+import withBundleAnalyzer from '@next/bundle-analyzer'
+import path from 'path'
 
 const SERVICE_WORKERS_PATH = './src/service-workers'
 
@@ -22,7 +22,7 @@ const rewrites = async () => {
   return {
     fallback: [
       {
-        source: "/coreapi/:path*",
+        source: '/coreapi/:path*',
         destination: 'https://safe.test.btcs.network/api/:path*',
       },
     ],
