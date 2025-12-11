@@ -75,11 +75,11 @@ jobs:
           key: ${{ secrets.TEST2_KEY }}
           script: |
             cd tmp
-            tar -xzvf $ARCHIVE_NAME.tar.gz
+            tar -xzvf ${{ env.ARCHIVE_NAME }}.tar.gz
             sudo cp -rf /home/ec2-user/tmp/dist/* /usr/share/nginx/safe
             sudo cp -rf /home/ec2-user/tmp/dist/* /usr/share/nginx/safe-new
             rm -rf /home/ec2-user/tmp/dist
-            rm $ARCHIVE_NAME.tar.gz
+            rm ${{ env.ARCHIVE_NAME }}.tar.gz
 
       - name: Clean
         run: |
