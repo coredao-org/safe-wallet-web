@@ -1,18 +1,18 @@
+import Track from '@/components/common/Track'
 import { AppRoutes } from '@/config/routes'
 import { useHasFeature } from '@/hooks/useChains'
-import { FEATURES } from '@/utils/chains'
-import { Paper, SvgIcon, Typography, Divider, Box, Skeleton, Button, Link } from '@mui/material'
-import SafeLogo from '@/public/images/logo-text.svg'
-import dynamic from 'next/dynamic'
-import css from './styles.module.css'
-import { useRouter } from 'next/router'
-import { CREATE_SAFE_EVENTS } from '@/services/analytics/events/createLoadSafe'
-import { OVERVIEW_EVENTS, OVERVIEW_LABELS, trackEvent } from '@/services/analytics'
 import useWallet from '@/hooks/wallets/useWallet'
-import { useHasSafes } from '../MyAccounts/useAllSafes'
-import Track from '@/components/common/Track'
+import SafeLogo from '@/public/images/logo-text.svg'
+import { OVERVIEW_EVENTS, OVERVIEW_LABELS, trackEvent } from '@/services/analytics'
+import { CREATE_SAFE_EVENTS } from '@/services/analytics/events/createLoadSafe'
+import { FEATURES } from '@/utils/chains'
+import { Box, Button, Divider, Link, Paper, Skeleton, SvgIcon, Typography } from '@mui/material'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
+import { useHasSafes } from '../MyAccounts/useAllSafes'
 import WalletLogin from './WalletLogin'
+import css from './styles.module.css'
 
 const SocialSigner = dynamic(() => import('@/components/common/SocialSigner'), {
   loading: () => <Skeleton variant="rounded" height={42} width="100%" />,
@@ -30,6 +30,9 @@ const WelcomeLogin = () => {
   }, [])
 
   useEffect(() => {
+    console.log('shouldRedirect', shouldRedirect)
+    console.log('wallet', wallet)
+    console.log('isLoaded', isLoaded)
     if (!shouldRedirect) return
 
     if (wallet && isLoaded) {

@@ -23,7 +23,7 @@ const rewrites = async () => {
     fallback: [
       {
         source: '/coreapi/:path*',
-        destination: 'https://safe.test.btcs.network/api/:path*',
+        destination: 'https://safe.test2.btcs.network/api/:path*',
       },
     ],
   }

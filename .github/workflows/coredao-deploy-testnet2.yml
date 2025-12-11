@@ -47,21 +47,34 @@ jobs:
           tar -czf "$ARCHIVE_NAME".tar.gz dist
 
       # Staging
-      - name: Deploy to the coredao
-        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+      - name: First SSH - prepare server
+        uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.TEST2_HOST }}
-          user: ${{ secrets.TEST2_USER }}
+          username: ${{ secrets.TEST2_USER }}
           key: ${{ secrets.TEST2_KEY }}
-          connect_timeout: 10s
-          first_ssh: |
-            mkdir ~/tmp | true
-            sudo mkdir /usr/share/nginx/safe | true
-            sudo mkdir /usr/share/nginx/safe-new | true
+          script: |
+            mkdir -p ~/tmp || true
+            sudo mkdir -p /usr/share/nginx/safe || true
+            sudo mkdir -p /usr/share/nginx/safe-new || true
 
-          scp: |
-            $ARCHIVE_NAME.tar.gz => /home/ec2-user/tmp
-          last_ssh: |
+      - name: SCP - upload
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets.TEST2_HOST }}
+          username: ${{ secrets.TEST2_USER }}
+          key: ${{ secrets.TEST2_KEY }}
+          source: '$ARCHIVE_NAME.tar.gz'
+          target: '/home/ec2-user/tmp'
+          strip_components: 2
+
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.TEST2_HOST }}
+          username: ${{ secrets.TEST2_USER }}
+          key: ${{ secrets.TEST2_KEY }}
+          script: |
             cd tmp
             tar -xzvf $ARCHIVE_NAME.tar.gz
             sudo cp -rf /home/ec2-user/tmp/dist/* /usr/share/nginx/safe
