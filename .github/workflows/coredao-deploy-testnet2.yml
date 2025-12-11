@@ -64,9 +64,8 @@ jobs:
           host: ${{ secrets.TEST2_HOST }}
           username: ${{ secrets.TEST2_USER }}
           key: ${{ secrets.TEST2_KEY }}
-          source: '$ARCHIVE_NAME.tar.gz'
+          source: '${{ env.ARCHIVE_NAME }}.tar.gz'
           target: '/home/ec2-user/tmp'
-          strip_components: 2
 
       - name: Deploy
         uses: appleboy/ssh-action@v1.0.0
