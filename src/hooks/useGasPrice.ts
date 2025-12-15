@@ -1,5 +1,8 @@
+import useAsync, { type AsyncResult } from '@/hooks/useAsync'
+import { Errors, logError } from '@/services/exceptions'
+import { asError } from '@/services/exceptions/utils'
+import { FEATURES, hasFeature } from '@/utils/chains'
 import { formatVisualAmount } from '@/utils/formatters'
-import { type FeeData } from 'ethers'
 import type {
   ChainInfo,
   GasPrice,
@@ -8,13 +11,10 @@ import type {
   GasPriceOracle,
 } from '@safe-global/safe-gateway-typescript-sdk'
 import { GAS_PRICE_TYPE } from '@safe-global/safe-gateway-typescript-sdk'
-import useAsync, { type AsyncResult } from '@/hooks/useAsync'
+import { type FeeData } from 'ethers'
+import { useWeb3ReadOnly } from '../hooks/wallets/web3'
 import { useCurrentChain } from './useChains'
 import useIntervalCounter from './useIntervalCounter'
-import { useWeb3ReadOnly } from '../hooks/wallets/web3'
-import { Errors, logError } from '@/services/exceptions'
-import { FEATURES, hasFeature } from '@/utils/chains'
-import { asError } from '@/services/exceptions/utils'
 
 type EstimatedGasPrice =
   | {
@@ -130,32 +130,36 @@ const getGasPrice = async (gasPriceConfigs: GasPrice): Promise<EstimatedGasPrice
   }
 }
 
+// Minimum gas price (60 gwei = 60000000000 wei)
+const MIN_GAS_PRICE = 60000000000n
+
 const getGasParameters = (
   estimation: EstimatedGasPrice | undefined,
   feeData: FeeData | undefined,
   isEIP1559: boolean,
 ): GasFeeParams => {
+  let maxFeePerGas: bigint | null | undefined
+  let maxPriorityFeePerGas: bigint | null | undefined
+
   if (!estimation) {
-    return {
-      maxFeePerGas: isEIP1559 ? feeData?.maxFeePerGas : feeData?.gasPrice,
-      maxPriorityFeePerGas: isEIP1559 ? feeData?.maxPriorityFeePerGas : undefined,
-    }
+    maxFeePerGas = isEIP1559 ? feeData?.maxFeePerGas : feeData?.gasPrice
+    maxPriorityFeePerGas = isEIP1559 ? feeData?.maxPriorityFeePerGas : undefined
+  } else if (isEIP1559 && 'maxFeePerGas' in estimation && 'maxPriorityFeePerGas' in estimation) {
+    maxFeePerGas = estimation.maxFeePerGas
+    maxPriorityFeePerGas = estimation.maxPriorityFeePerGas
+  } else if ('gasPrice' in estimation) {
+    maxFeePerGas = estimation.gasPrice
+    maxPriorityFeePerGas = isEIP1559 ? feeData?.maxPriorityFeePerGas : undefined
   }
 
-  if (isEIP1559 && 'maxFeePerGas' in estimation && 'maxPriorityFeePerGas' in estimation) {
-    return estimation
-  }
-
-  if ('gasPrice' in estimation) {
-    return {
-      maxFeePerGas: estimation.gasPrice,
-      maxPriorityFeePerGas: isEIP1559 ? feeData?.maxPriorityFeePerGas : undefined,
-    }
+  // Apply minimum gas price
+  if (maxFeePerGas && maxFeePerGas < MIN_GAS_PRICE) {
+    maxFeePerGas = MIN_GAS_PRICE
   }
 
   return {
-    maxFeePerGas: undefined,
-    maxPriorityFeePerGas: undefined,
+    maxFeePerGas,
+    maxPriorityFeePerGas,
   }
 }
 

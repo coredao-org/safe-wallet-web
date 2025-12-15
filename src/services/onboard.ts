@@ -1,9 +1,9 @@
-import Onboard, { type OnboardAPI } from '@web3-onboard/core'
-import type { ChainInfo } from '@safe-global/safe-gateway-typescript-sdk'
 import { getAllWallets } from '@/hooks/wallets/wallets'
 import { getRpcServiceUrl } from '@/hooks/wallets/web3'
 import type { EnvState } from '@/store/settingsSlice'
 import { numberToHex } from '@/utils/hex'
+import type { ChainInfo } from '@safe-global/safe-gateway-typescript-sdk'
+import Onboard, { type OnboardAPI } from '@web3-onboard/core'
 
 let onboard: OnboardAPI | null = null
 
@@ -49,7 +49,7 @@ export const createOnboard = (
 
     connect: {
       removeWhereIsMyWalletWarning: true,
-      autoConnectLastWallet: false,
+      autoConnectLastWallet: true,
     },
   })
 

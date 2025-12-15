@@ -196,7 +196,6 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
     setIsCreating(true)
 
     try {
-      debugger
       const readOnlyFallbackHandlerContract = await getReadOnlyFallbackHandlerContract(
         chain.chainId,
         LATEST_SAFE_VERSION,
@@ -212,7 +211,6 @@ const ReviewStep = ({ data, onSubmit, onBack, setStep }: StepRenderProps<NewSafe
 
       const saltNonce = await getAvailableSaltNonce(provider, { ...props, saltNonce: '0' })
       const safeAddress = await computeNewSafeAddress(provider, { ...props, saltNonce })
-
       if (isCounterfactual && payMethod === PayMethod.PayLater) {
         gtmSetSafeAddress(safeAddress)
 

@@ -1,9 +1,9 @@
-import type { EthersError } from '@/utils/ethers-utils'
+import { WALLET_KEYS } from '@/hooks/wallets/consts'
 import { type ConnectedWallet } from '@/hooks/wallets/useOnboard'
 import { getWeb3ReadOnly, isSmartContract } from '@/hooks/wallets/web3'
-import { WALLET_KEYS } from '@/hooks/wallets/consts'
-import memoize from 'lodash/memoize'
 import { ONBOARD_MPC_MODULE_LABEL } from '@/services/mpc/SocialLoginModule'
+import type { EthersError } from '@/utils/ethers-utils'
+import memoize from 'lodash/memoize'
 
 const WALLETCONNECT = 'WalletConnect'
 

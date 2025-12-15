@@ -1,0 +1,87 @@
+name: Deploy to Core Testnet2
+
+on:
+  pull_request:
+
+  push:
+    branches: ['coredao/coredao-testnet2-new']
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    env:
+      ARCHIVE_NAME: ${{ github.event.repository.name }}
+    name: Deploy to testnet2
+
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      # Post a PR comment before deploying
+      - name: Post a comment while building
+        if: github.event.number
+        uses: mshick/add-pr-comment@v2
+        with:
+          message-id: praul
+          message: |
+            ## Branch preview
+            ⏳ Deploying a preview site...
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]'
+
+      - uses: actions/checkout@v3
+
+      - uses: ./.github/workflows/yarn
+
+      - uses: ./.github/workflows/build
+        with:
+          secrets: ${{ toJSON(secrets) }}
+
+      - name: Create archive
+        run: |
+          mv out dist
+          tar -czf "$ARCHIVE_NAME".tar.gz dist
+
+      # Staging
+      - name: First SSH - prepare server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.TEST2_HOST }}
+          username: ${{ secrets.TEST2_USER }}
+          key: ${{ secrets.TEST2_KEY }}
+          script: |
+            mkdir -p ~/tmp || true
+            sudo mkdir -p /usr/share/nginx/safe || true
+            sudo mkdir -p /usr/share/nginx/safe-new || true
+
+      - name: SCP - upload
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets.TEST2_HOST }}
+          username: ${{ secrets.TEST2_USER }}
+          key: ${{ secrets.TEST2_KEY }}
+          source: '${{ env.ARCHIVE_NAME }}.tar.gz'
+          target: '/home/ec2-user/tmp'
+
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.TEST2_HOST }}
+          username: ${{ secrets.TEST2_USER }}
+          key: ${{ secrets.TEST2_KEY }}
+          script: |
+            cd tmp
+            tar -xzvf ${{ env.ARCHIVE_NAME }}.tar.gz
+            sudo cp -rf /home/ec2-user/tmp/dist/* /usr/share/nginx/safe
+            sudo cp -rf /home/ec2-user/tmp/dist/* /usr/share/nginx/safe-new
+            rm -rf /home/ec2-user/tmp/dist
+            rm ${{ env.ARCHIVE_NAME }}.tar.gz
+
+      - name: Clean
+        run: |
+          rm -rf dist
+          rm $ARCHIVE_NAME.tar.gz
