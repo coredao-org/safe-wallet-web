@@ -42,7 +42,7 @@ jobs:
           prod: ${{ true }}
 
       - name: Create archive
-        run: tar -czvf safe.tar.gz dist
+        run: tar -czvf safe.tar.gz out
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
