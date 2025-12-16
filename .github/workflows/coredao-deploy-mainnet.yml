@@ -41,8 +41,11 @@ jobs:
           secrets: ${{ toJSON(secrets) }}
           prod: ${{ true }}
 
+      - name: Rename out to dist
+        run: mv out dist
+
       - name: Create archive
-        run: tar -czvf safe.tar.gz out
+        run: tar -czvf safe.tar.gz dist
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
